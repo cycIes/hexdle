@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Victory
+{% endblock %}
+
+{% block content %}
+    <p>Congratulations! You guessed the color!</p>
+    <p id="color">#{{ color }}</p>
+{% endblock %}
+
+{% block embedded %}
+    <style>
+        #color {
+            color: #{{ color }};
+        }
+    </style>
+{% endblock %}

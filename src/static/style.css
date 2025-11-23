@@ -11,6 +11,10 @@ input {
     background-color: lightgreen;
 }
 
+.partial {
+    background-color: khaki;
+}
+
 .incorrect {
     background-color: tomato;
 }

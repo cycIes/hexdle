@@ -20,28 +20,46 @@ def random_color():
 
 color = random_color()
 attempts = []
-victory = False
+count = 0
+won = False
 
 
 @app.route("/")
 def index():
-    # color = random_color()
-    return render_template("index.html", color=f"#{color}", hex=color, attempts=attempts)
+    return render_template("index.html", color=f"#{color}", hex=color, attempts=attempts, victory=False, count=count)
 
 @app.route("/check", methods=["POST"])
 def check():
-    answer = [input for input in request.form.values()]
-    length = len(color)
-    correct = ["correct" if answer[i] == color[i] else "incorrect" for i in range(length)]
-    attempt = [{"value": answer[i], "correct": correct[i]} for i in range(length)]
+    global count
+    count += 1
+    attempt = []
+    answers = request.form.values()
+    victory = True
+    i = 0
+    
+    for input in answers:
+        if input == color[i]:
+            correct = "correct"
+        elif input in color:
+            correct = "partial"
+            victory = False
+        else:
+            correct = "incorrect"
+            victory = False
+        attempt.append({"value": input, "correct": correct})
+        i += 1
     attempts.append(attempt)
-    info = {"feedback": correct, "victory": False in correct}
-    if "incorrect" in correct:
-        return redirect("/")
-    else:
+    
+    if victory:
+        global won
+        won = True
         return redirect("/victory")
-    # return info
+    else:
+        return redirect("/")
     
 @app.route("/victory")
 def victory():
-    return None
+    if won:
+        # return render_template("index.html", color=f"#{color}", hex=color, attempts=attempts, victory=True, count=count)
+        return render_template("victory.html", color=color)
+    return redirect("/")
