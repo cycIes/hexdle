@@ -2,3 +2,15 @@
     width: 100px;
     height: 100px;
 }
+
+input {
+    width: 25px;
+}
+
+.correct {
+    background-color: lightgreen;
+}
+
+.incorrect {
+    background-color: tomato;
+}

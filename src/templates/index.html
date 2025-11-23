@@ -8,15 +8,56 @@
     {{ hex }}
     <div id="color">
     </div>
-
-    
+    <div id="attempts">
+        {% for attempt in attempts %}
+            <div>
+                #
+                {% for digit in attempt %}
+                    <input value={{ digit["value"] }} disabled class={{ digit["correct"] }}>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+    <div id="input">
+        <form id="input" action="/check" method="post">
+            #
+            <input name="1" maxlength="1" pattern="[A-Fa-f0-9]" required autocomplete="off">
+            <input name="2" maxlength="1" pattern="[A-Fa-f0-9]" required autocomplete="off">
+            <input name="3" maxlength="1" pattern="[A-Fa-f0-9]" required autocomplete="off">
+            <input name="4" maxlength="1" pattern="[A-Fa-f0-9]" required autocomplete="off">
+            <input name="5" maxlength="1" pattern="[A-Fa-f0-9]" required autocomplete="off">
+            <input name="6" maxlength="1" pattern="[A-Fa-f0-9]" required autocomplete="off">
+            <button id="submit" type="submit">Check</button>
+        </form>
+    </div>
 {% endblock %}
 
 {% block script %}
     <script>
         let color_value = '{{ color }}';
-        let color_box = document.querySelector("#color");
+        let color_box = document.querySelector('#color');
         color_box.style.backgroundColor = color_value;
         
+        let input = document.querySelector('#input');
+        let submit = document.querySelector('#submit')
+        
+        {#
+        submit.addEventListener('click', () => {
+            let data = new FormData();
+            let inputs = input.querySelectorAll('input');
+            for (const node of inputs) 
+            {
+                data.append(node.name, node.value);
+            }
+            let test;
+            fetch("/check", {
+                "method": "POST",
+                "body": data
+            })
+            .then(response => test = response.json())
+            .then(result => alert(result));
+            console.log(test)
+        });
+        #}
     </script>
 {% endblock %}
