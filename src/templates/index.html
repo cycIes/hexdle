@@ -73,36 +73,8 @@
             background-color: {{ color }};
         }
     </style>
-    <script>
-        
-        let input = document.querySelector('#input');
-        let fields = input.querySelectorAll('input');
-        fields.forEach((field) => field.addEventListener('keyup', (e) => {
-            if (e.key !== 'Backspace' && e.key !== 'Shift') 
-            {
-                field.blur();
-                next = field.nextElementSibling;
-                if (next) 
-                {
-                    next.focus();
-                }
-            }
-        }));
-        fields.forEach((field) => field.addEventListener('keydown', (e) => {
-            if (e.key === 'Backspace' && field.value === '')
-            {
-                field.blur()
-                previous = field.previousElementSibling
-                if (previous)
-                {
-                    previous.focus();
-                }
-            }
-        }));
-        
-
+    <script>    
         {#
-        
         let input = document.querySelector('#input');
         let submit = document.querySelector('#submit')
         #}
