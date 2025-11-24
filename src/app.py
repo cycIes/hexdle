@@ -12,17 +12,30 @@ def after_request(response):
     return response
 
 
+# color
+# attempts
+# count
+# won
+
 def random_color():
     color = ""
     for i in range(3):
         color += str(hex(randrange(0, 255)))[2:].zfill(2)
     return color
 
-color = random_color()
-# color = "d46dd6"
-attempts = []
-count = 0
-won = False
+def reset():
+    global color
+    global attempts
+    global count
+    global won
+    
+    color = random_color()
+    # color = "d46dd6"
+    attempts = []
+    count = 0
+    won = False
+
+reset()
 
 
 @app.route("/")
@@ -78,5 +91,10 @@ def check():
 def victory():
     if won:
         # return render_template("index.html", color=f"#{color}", hex=color, attempts=attempts, victory=True, count=count)
-        return render_template("victory.html", color=color, count=count)
+        return render_template("victory.html", color=color, count=count, attempts=attempts)
+    return redirect("/")
+
+@app.route("/new")
+def new():
+    reset()
     return redirect("/")

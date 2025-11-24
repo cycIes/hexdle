@@ -23,3 +23,9 @@ input {
 .incorrect {
     background-color: lightgray;
 }
+
+.inline-square {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+}
