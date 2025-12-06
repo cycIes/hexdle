@@ -31,11 +31,19 @@ input {
     text-align: center;
     border: 2px solid light-dark(var(--bs-gray-500), var(--bs-gray-300));
     caret-color: transparent;
+    font-weight: bold;
 }
 
 input:focus-visible {
     border: 2px solid light-dark(var(--bs-gray), var(--bs-gray-200));
     outline: 0px;
+}
+
+.inputs {
+    margin: 0.25rem;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 0.25rem;
 }
 
 .correct {
@@ -63,12 +71,18 @@ input:focus-visible {
 }
 
 .key {
-    vertical-align: middle;
+    height: 40px;
 }
 
 .clean-btn {
     background: none;
     border: none;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+    padding: 0.25rem;
+    justify-content: space-evenly;
+    gap: 0.25rem;
 }
 
 .normal-btn {
@@ -76,5 +90,17 @@ input:focus-visible {
     border-radius: 0.3rem;
     padding: 0.5rem;
     font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    vertical-align: middle;
+}
+
+button {
     background-color: var(--bs-gray-400);
+    justify-content: center;
+}
+
+#toolbar {
+    display: flex;
+    justify-content: space-evenly;
 }

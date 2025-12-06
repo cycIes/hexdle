@@ -17,10 +17,6 @@ def random_color():
         color += str(hex(randrange(0, 255)))[2:].zfill(2).upper()
     return color
 
-def appendUnique(element, list):
-    if element not in list:
-        list.append(element)
-
 def reset():
     global color
     global attempts
@@ -29,6 +25,7 @@ def reset():
     global correctDigits
     global partialDigits
     global incorrectDigits
+    global keyClasses
     
     color = random_color()
     attempts = []
@@ -37,13 +34,14 @@ def reset():
     correctDigits = []
     partialDigits = []
     incorrectDigits = []
+    keyClasses = {}
 
 reset()
 
 
 @app.route("/")
 def index():
-    return render_template("index.html", color=f"#{color}", hex=color, attempts=attempts, victory=False)
+    return render_template("index.html", color=f"#{color}", hex=color, attempts=attempts, victory=False, keyClasses=keyClasses)
 
 @app.route("/check", methods=["POST"])
 def check():
@@ -63,7 +61,7 @@ def check():
         if digit == color[i]:
             correct = "correct"
             remaining[i] = ""
-            appendUnique(digit, correctDigits)
+            keyClasses[digit] = "correct"
         elif digit in color:
             partial_guesses.append({"digit": digit, "index": i})
             correct = "incorrect"
@@ -71,7 +69,7 @@ def check():
         else:
             correct = "incorrect"
             victory = False
-            appendUnique(digit, incorrectDigits)
+            keyClasses[digit] = "incorrect"
         attempt.append({"value": digit, "correct": correct})
         guessed_color += digit
     
@@ -82,7 +80,7 @@ def check():
             index = remaining.index(guess["digit"])
             attempt[guess["index"]]["correct"] = "partial"
             remaining[index] = ""
-            appendUnique(digit, partialDigits)
+            keyClasses[guess["digit"]] = "partial"
             
     attempts.append({"attempt": attempt, "color": guessed_color})
     
