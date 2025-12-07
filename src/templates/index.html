@@ -7,6 +7,7 @@
 {% block content %}
     <div class="content p-3">
         <div id="toolbar">
+            <h1>Hexdle</h1>
             <button type="button" data-bs-toggle="modal" data-bs-target="#instructions" class="clean-btn">
                 HOW TO
                 {#
@@ -33,7 +34,6 @@
             </button>
         </div>
         <p>Guess the color below.</p>
-        
         <div id="color-box">
         </div>
         <form id="input" action="/check" method="post" class="m-2">
@@ -126,11 +126,11 @@
                     <div class="modal-body" id="settings-container">
                         <div class="form-check form-switch form-check-reverse">
                             <label class="form-check-label" for="switchGuessMode">Limited guesses</label>
-                            <input class="form-check-input" type="checkbox" role="switch" id="switchGuessMode">
+                            <input class="form-check-input" type="checkbox" role="switch" id="switchGuessMode" name="limitedMode" {% if limited_mode %}checked{% endif %}>
                         </div>
                         <div class="form-check form-switch form-check-reverse">
                             <label class="form-check-label" for="switchDarkMode">Dark mode</label>
-                            <input class="form-check-input" type="checkbox" role="switch" id="switchDarkMode">
+                            <input class="form-check-input" type="checkbox" role="switch" id="switchDarkMode" name="darkMode" {% if dark_mode %}checked{% endif %}>
                         </div>
                     </div>
                 </div>
@@ -147,12 +147,12 @@
     </style>
     <script>
         const keys = document.querySelectorAll('.key');
-        const keyClasses = JSON.parse('{{ keyClasses|tojson }}');
+        const key_classes = JSON.parse('{{ key_classes|tojson }}');
 
         keys.forEach((key) => {
-            if (keyClasses[key.id])
+            if (key_classes[key.id])
             {
-                key.classList.add(keyClasses[key.id]);
+                key.classList.add(key_classes[key.id]);
             }
         });
         {#

@@ -22,26 +22,28 @@ def reset():
     global attempts
     global count
     global won
-    global correctDigits
-    global partialDigits
-    global incorrectDigits
-    global keyClasses
+    global correct_digits
+    global partial_digits
+    global incorrect_digits
+    global key_classes
     
     color = random_color()
     attempts = []
     count = 0
     won = False
-    correctDigits = []
-    partialDigits = []
-    incorrectDigits = []
-    keyClasses = {}
+    correct_digits = []
+    partial_digits = []
+    incorrect_digits = []
+    key_classes = {}
 
 reset()
 
+dark_mode = False
+limited_mode = False
 
 @app.route("/")
 def index():
-    return render_template("index.html", color=f"#{color}", hex=color, attempts=attempts, victory=False, keyClasses=keyClasses)
+    return render_template("index.html", color=f"#{color}", hex=color, attempts=attempts, victory=False, key_classes=key_classes, dark_mode=dark_mode, limited_mode=limited_mode)
 
 @app.route("/check", methods=["POST"])
 def check():
@@ -61,7 +63,7 @@ def check():
         if digit == color[i]:
             correct = "correct"
             remaining[i] = ""
-            keyClasses[digit] = "correct"
+            key_classes[digit] = "correct"
         elif digit in color:
             partial_guesses.append({"digit": digit, "index": i})
             correct = "incorrect"
@@ -69,18 +71,16 @@ def check():
         else:
             correct = "incorrect"
             victory = False
-            keyClasses[digit] = "incorrect"
+            key_classes[digit] = "incorrect"
         attempt.append({"value": digit, "correct": correct})
         guessed_color += digit
     
-    print(partial_guesses)
-    print(remaining)
     for guess in partial_guesses:
         if guess["digit"] in remaining:
             index = remaining.index(guess["digit"])
             attempt[guess["index"]]["correct"] = "partial"
             remaining[index] = ""
-            keyClasses[guess["digit"]] = "partial"
+            key_classes[guess["digit"]] = "partial"
             
     attempts.append({"attempt": attempt, "color": guessed_color})
     
@@ -95,10 +95,25 @@ def check():
 def victory():
     if won:
         # return render_template("index.html", color=f"#{color}", hex=color, attempts=attempts, victory=True, count=count)
-        return render_template("victory.html", color=color, count=count, attempts=attempts)
+        return render_template("victory.html", color=color, count=count, attempts=attempts, dark_mode=dark_mode)
     return redirect("/")
 
 @app.route("/new")
 def new():
     reset()
     return redirect("/")
+
+@app.route("/settings", methods=["GET", "POST"])
+def settings():
+    if request.method == "POST":
+        settings = request.form
+        
+        global dark_mode
+        global limited_mode
+        
+        dark_mode = settings.get("darkMode") == "true"
+        limited_mode = settings.get("limitedMode") == "true"
+    
+        return settings
+    else:
+        return {"dark_mode": dark_mode, "limited_mode": limited_mode}

@@ -7,7 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const keyboard = document.querySelector('#keyboard');
     const dark_mode_toggle = document.querySelector('#switchDarkMode');
 
-    let color_scheme = 'light';
+    let color_scheme;
+    fetch("/settings")
+    .then(response => response.json())
+    .then(data => data.dark_mode ? color_scheme = 'dark' : color_scheme = 'light');
 
     // Focus the next element
     function focusNext(current)
@@ -27,6 +30,23 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             previous.focus();
         }
+    }
+
+    // POST settings data
+    function saveSettings()
+    {
+        let data = new FormData();
+        const settings = document.querySelector("#settings-container");
+        const modes = settings.querySelectorAll('input');
+        for (const mode of modes) 
+        {
+            data.append(mode.name, mode.checked);
+        }
+        fetch("/settings", {
+            "method": "POST",
+            "body": data
+        })
+        .then(response => response.json());
     }
 
     // Focus next input element after typing a valid key
@@ -99,16 +119,17 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             body.classList.add(color_scheme);
         }
-    
-        if (color_scheme === 'light')
+
+        if (dark_mode_toggle.checked)
         {
+            body.classList.replace(color_scheme, 'dark');
             color_scheme = 'dark';
-            body.classList.replace('light', 'dark');
         }
-        else 
+        else
         {
+            body.classList.replace(color_scheme, 'light');
             color_scheme = 'light';
-            body.classList.replace('dark', 'light');
         }
+        saveSettings();
     });
 });

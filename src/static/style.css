@@ -12,7 +12,7 @@ html, body {
 }
 
 .fill-screen {
-    background-color: light-dark(white, var(--bs-gray-800));
+    background-color: light-dark(white, var(--bs-gray-900));
 }
 
 .content {
@@ -58,6 +58,7 @@ input:focus-visible {
     display: flex;
     justify-content: space-evenly;
     gap: 0.25rem;
+    align-items: center;
 }
 
 .correct {
@@ -78,7 +79,7 @@ input:focus-visible {
     border-color: var(--bs-gray-600);
 }
 
-p {
+#toolbar > h1, p {
     color: light-dark(black, white);
 }
 
