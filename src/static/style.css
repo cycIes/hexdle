@@ -26,13 +26,17 @@ form {
     align-items: center;
 }
 
+.inputs > p {
+    font-size: 2.25rem;
+}
+
 .inline {
     display: inline;
 }
 
 input {
-    width: 2.75rem;
-    height: 2.75rem;
+    width: 2.8rem;
+    height: 2.8rem;
     text-align: center;
     border: 2px solid light-dark(var(--bs-gray-500), var(--bs-gray-700));
     caret-color: transparent;
@@ -48,8 +52,9 @@ input:focus-visible {
     margin: 0.25rem;
     display: flex;
     justify-content: space-evenly;
-    gap: 0.25rem;
+    gap: 0.5rem;
     align-items: center;
+    flex-grow: 0;
 }
 
 .correct {
@@ -85,6 +90,7 @@ input:focus-visible {
 
 .key {
     height: 40px;
+    margin: 0.05rem;
 }
 
 .clean-btn {
@@ -101,7 +107,7 @@ input:focus-visible {
 .normal-btn {
     border-width: 0px;
     border-radius: 0.3rem;
-    padding: 0.5rem;
+    padding: 0.8rem;
     font-weight: bold;
     display: inline-flex;
     align-items: center;
@@ -122,4 +128,16 @@ button {
 
 #settings-container {
     width: 210px;
+}
+
+@media (max-width: 450px) {
+    .normal-btn {
+        padding: 0.6rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .normal-btn {
+        padding: 0.5rem;
+    }
 }

@@ -56,12 +56,12 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 0; i < remaining; i++) 
         {
             let div = document.createElement('div');
-            div.className = 'inputs';
+            div.className = 'inputs m-0';
             extra.appendChild(div);
 
             let hashSign = document.createElement('p');
             hashSign.textContent = '#'
-            hashSign.className = 'inline fs-1 fw-bolder align-middle mb-0';
+            hashSign.className = 'inline fw-bolder align-middle mb-0';
             hashSign.style.color = '#000';
             div.appendChild(hashSign);
 
