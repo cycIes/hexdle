@@ -3,21 +3,15 @@ from random import randrange
 
 app = Flask(__name__)
 
-@app.after_request
-def after_request(response):
-    """Ensure responses aren't cached"""
-    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-    response.headers["Expires"] = 0
-    response.headers["Pragma"] = "no-cache"
-    return response
-
 def random_color():
+    """ Return a random hexcode """
     color = ""
     for i in range(3):
         color += str(hex(randrange(0, 255)))[2:].zfill(2).upper()
     return color
 
 def reset():
+    """ Reset game global variables """
     global color
     global attempts
     global count
@@ -47,10 +41,12 @@ limited_mode = False
 
 @app.route("/")
 def index():
+    """ Generate main page """
     return render_template("index.html", color=f"#{color}", hex=color, attempts=attempts, max=MAX_ATTEMPTS, end=end, victory=won, count=count, key_classes=key_classes, dark_mode=dark_mode, limited_mode=limited_mode)
 
 @app.route("/check", methods=["POST"])
 def check():
+    """ Check the user's guess """
     global count
     count += 1
     attempt = []
@@ -100,11 +96,13 @@ def check():
 
 @app.route("/new")
 def new():
+    """ Start a new game """
     reset()
     return redirect("/")
 
 @app.route("/settings", methods=["GET", "POST"])
 def settings():
+    """ Modify settings variables """
     if request.method == "POST":
         settings = request.form
         
@@ -120,8 +118,8 @@ def settings():
     
 @app.route("/data")
 def data():
+    """ Send informative variables """
     data = {
-        "color": color,
         "count": count,
         "max_attempts": MAX_ATTEMPTS
     }
@@ -129,6 +127,7 @@ def data():
 
 @app.route("/lose")
 def lose():
+    """ End game without victory """
     global end
     end = True
     return redirect("/")

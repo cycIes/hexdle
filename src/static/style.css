@@ -112,6 +112,7 @@ input:focus-visible {
     display: inline-flex;
     align-items: center;
     vertical-align: middle;
+    color: light-dark(black, white)
 }
 
 button {

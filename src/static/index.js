@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const limited_mode_toggle = document.querySelector('#switchGuessMode');
     const digits_count = 6;
 
+    // Fetch user settings preferences
     let color_scheme;
     let limited_mode;
     fetch('/settings')
@@ -18,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         limited_mode = data.limited_mode;
     });
 
+    // Fetch max attempts and count data
     let max_attempts;
     let count;
     fetch('/data')
@@ -76,6 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Delete extra input fields
     function deleteExtraInputs()
     {
         const extra = document.querySelector('#extra');
