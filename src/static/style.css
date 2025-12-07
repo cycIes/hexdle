@@ -1,14 +1,32 @@
+html, body {
+    margin: 0;
+    height: 100vh;
+}
+
+.light {
+    color-scheme: light;
+}
+
+.dark {
+    color-scheme: dark;
+}
+
+.fill-screen {
+    background-color: light-dark(white, var(--bs-gray-800));
+}
+
 .content {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    /* background-color: light-dark(white, var(--bs-gray-800)); */
 }
 
 #color-box {
     width: 100px;
     height: 100px;
-    border: 2px solid var(--bs-gray-500);
+    border: 2px solid light-dark(var(--bs-gray-500), var(--bs-gray-700));
 }
 
 form {
@@ -25,13 +43,13 @@ input {
     width: 2.75rem;
     height: 2.75rem;
     text-align: center;
-    border: 2px solid light-dark(var(--bs-gray-500), var(--bs-gray-300));
+    border: 2px solid light-dark(var(--bs-gray-500), var(--bs-gray-700));
     caret-color: transparent;
     font-weight: bold;
 }
 
 input:focus-visible {
-    border: 2px solid light-dark(var(--bs-gray), var(--bs-gray-200));
+    border: 2px solid light-dark(var(--bs-gray), var(--bs-gray-500));
     outline: 0px;
 }
 
@@ -58,6 +76,10 @@ input:focus-visible {
     background-color: var(--bs-gray-600);
     color: white;
     border-color: var(--bs-gray-600);
+}
+
+p {
+    color: light-dark(black, white);
 }
 
 .inline-square {
@@ -92,7 +114,7 @@ input:focus-visible {
 }
 
 button {
-    background-color: var(--bs-gray-400);
+    background-color: light-dark(var(--bs-gray-400), var(--bs-gray-600));
     justify-content: center;
 }
 

@@ -1,11 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const body = document.querySelector('body');
     const input = document.querySelector('#input');
     const fields = input.querySelectorAll('input');
     const valid_special_keys = ['Backspace', 'Shift', 'ArrowLeft', 'ArrowRight', 'Tab'];
     const valid_digit_keys = ['A', 'B', 'C', 'D', 'E', 'F', 'a', 'b', 'c', 'd', 'e', 'f', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
     const keyboard = document.querySelector('#keyboard');
-    const key_btns = document.querySelectorAll('.key');
+    const dark_mode_toggle = document.querySelector('#switchDarkMode');
 
+    let color_scheme = 'light';
+
+    // Focus the next element
     function focusNext(current)
     {
         const next = current.nextElementSibling;
@@ -15,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Focus the previous element
     function focusPrevious(current)
     {
         const previous = current.previousElementSibling;
@@ -79,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-    
+
     // Prevent input fields from losing focus on button click
     keyboard.addEventListener('focusin', (e) => {
         const related = e.relatedTarget;
@@ -87,4 +92,23 @@ document.addEventListener('DOMContentLoaded', () => {
             related.focus();
         }
     })
+
+    // Toggle dark mode
+    dark_mode_toggle.addEventListener('click', () => {
+        if (!(body.classList.contains('light') || body.classList.contains('dark')))
+        {
+            body.classList.add(color_scheme);
+        }
+    
+        if (color_scheme === 'light')
+        {
+            color_scheme = 'dark';
+            body.classList.replace('light', 'dark');
+        }
+        else 
+        {
+            color_scheme = 'light';
+            body.classList.replace('dark', 'light');
+        }
+    });
 });
