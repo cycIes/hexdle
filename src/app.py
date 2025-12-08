@@ -7,6 +7,7 @@ def random_color():
     """ Return a random hexcode """
     
     color = ""
+    # Generate random two digit hexadecimal numbers
     for i in range(3):
         color += str(hex(randrange(0, 255)))[2:].zfill(2).upper()
     return color
@@ -14,15 +15,15 @@ def random_color():
 def reset():
     """ Reset game global variables """
     
-    global color
-    global attempts
-    global count
-    global end
-    global won
-    global correct_digits
-    global partial_digits
-    global incorrect_digits
-    global key_classes
+    global color # The color the user has to guess
+    global attempts # Stores information about previous attempts
+    global count # Stores the number of attempts the user has made
+    global end # Stores if the game has ended
+    global won # Stores if the user won
+    global correct_digits # Stores digits in the right place
+    global partial_digits # Stores digits in the hexcode but not in the right place
+    global incorrect_digits # Stores digits not in the hexcode
+    global key_classes # Stores classification for each digit guessed
     
     color = random_color()
     attempts = []
@@ -71,7 +72,7 @@ def check():
             remaining[i] = ""
             key_classes[digit] = "correct"
         elif digit in color:
-            # Add digit as a possible partial guess
+            # Add digit as a possible partially correct guess
             partial_guesses.append({"digit": digit, "index": i})
             correct = "incorrect"
             victory = False
@@ -79,10 +80,11 @@ def check():
             correct = "incorrect"
             victory = False
             key_classes[digit] = "incorrect"
+        # Store guess and feedback about the guess
         attempt.append({"value": digit, "correct": correct})
         guessed_color += digit
     
-    # Check each possible partial guess
+    # Check each possible partially correct guess
     for guess in partial_guesses:
         if guess["digit"] in remaining:
             index = remaining.index(guess["digit"])

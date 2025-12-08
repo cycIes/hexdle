@@ -2,11 +2,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const body = document.querySelector('body');
     const input = document.querySelector('#input');
     const fields = input.querySelectorAll('input');
-    const valid_special_keys = ['Backspace', 'Shift', 'ArrowLeft', 'ArrowRight', 'Tab'];
-    const valid_digit_keys = ['A', 'B', 'C', 'D', 'E', 'F', 'a', 'b', 'c', 'd', 'e', 'f', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
     const keyboard = document.querySelector('#keyboard');
     const dark_mode_toggle = document.querySelector('#switchDarkMode');
     const limited_mode_toggle = document.querySelector('#switchGuessMode');
+
+    // Keys with special behavior
+    const valid_special_keys = ['Backspace', 'Tab'];
+    // Valid hexadecimal digits
+    const valid_digit_keys = ['A', 'B', 'C', 'D', 'E', 'F', 'a', 'b', 'c', 'd', 'e', 'f', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+    // The number of digits in a hexcode
     const digits_count = 6;
 
     // Fetch user settings preferences
@@ -57,16 +61,19 @@ document.addEventListener('DOMContentLoaded', () => {
         let remaining = max_attempts - count - 1;
         for (let i = 0; i < remaining; i++) 
         {
+            // Append input row
             let div = document.createElement('div');
             div.className = 'inputs m-0';
             extra.appendChild(div);
 
+            // Append hash sign
             let hashSign = document.createElement('p');
             hashSign.textContent = '#'
             hashSign.className = 'inline fw-bolder align-middle mb-0';
             hashSign.style.color = '#000';
             div.appendChild(hashSign);
 
+            // Append input fields
             for (let i = 0; i < digits_count; i++)
             {
                 let input = document.createElement('input');
@@ -110,23 +117,27 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }));
 
-    // Prevent typing invalid keys, add special key behavior, and focus previous input element on special keys
+    // Special key behavior on keydown
     fields.forEach((field) => field.addEventListener('keydown', (e) => {
         const key = e.key;
+        // Focus previous input element on special keys
         if ((key === 'Backspace' && field.value === '') || key === 'ArrowLeft')
         {
             field.blur();
             focusPrevious(field);
         }
+        // Prevent typing invalid keys
         else if (!((valid_digit_keys.includes(key)) || (valid_special_keys).includes(key)))
         {
             e.preventDefault();
         }
+        // Default to uppercase for keys
         else if (valid_digit_keys.includes(key))
         {
             field.value = key.toUpperCase();
             e.preventDefault();
         }
+        // Delete input text whenever backspace is pressed
         else if (key === 'Backspace')
         {
             field.value = '';
@@ -136,11 +147,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Type with provided keyboard
     keyboard.addEventListener('click', (e) => {
         const target = e.target;
+        // Check that the target is a key or is inside a key
         if (target.classList.contains('key') || target.parentElement.classList.contains('key')) 
         {
+            // Check currently focused element is an input
             const focused = document.activeElement;
             if (Array.from(fields).includes(focused))
             {
+                // Special backspace behavior
                 if (target.id === 'backspace' || target.parentElement.id === 'backspace')
                 {
                     if (focused.value === '')
@@ -160,6 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Prevent input fields from losing focus on button click
     keyboard.addEventListener('focusin', (e) => {
         const related = e.relatedTarget;
+        // Check if related target is an input field
         if (related && Array.from(fields).includes(related)) {
             related.focus();
         }
@@ -187,6 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             if (count >= max_attempts)
             {
+                // Go to lose route and allow redirecting
                 fetch('/lose')
                 .then(response => {
                     if (response.redirected) {
