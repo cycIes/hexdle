@@ -224,14 +224,12 @@
 {% endblock %}
 
 {% block embedded %}
+    {#
     <style>
-        #color-box {
-            background-color: {{ color }};
-        }
-
         #color {
             color: {{ color }};
         }
+    #}
     </style>
     <script type="text/javascript">
         const keys = document.querySelectorAll('.key');

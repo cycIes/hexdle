@@ -4,23 +4,44 @@ document.addEventListener('DOMContentLoaded', () => {
     let attempts = [];
     let count = 0;
     let key_classes = {};
-    let won;
-    let end;
+    let won = false;
+    let end = false;
     let dark_mode = false;
     let limited_mode = false;
 
     const MAX_ATTEMPTS = 10
 
     // Document nodes
+    const color_box = document.querySelector('#color-box')
     const check = document.querySelector('#check');
     const input = document.querySelector('#input');
     const keys = document.querySelectorAll('.key');
 
-    function randomColor() 
+    // Reset variables
+    function reset() 
     {
-        color = 'ABCDEF';
+        color = '';
+        let attempts = [];
+        let count = 0;
+        let key_classes = {};
+        let won = false;
+        let end = false;
     }
 
+    // Return a random hexcode
+    function randomColor() 
+    {
+        color = '';
+
+        // Generate random 6 digit hexadecimal number
+        for (let i = 0; i < 6; i++)
+        {
+            color += Math.floor((Math.random() * 16)).toString(16);
+        }
+        return color;
+    }
+
+    // Check the user's guess
     function checkGuess(digits) 
     {
         let attempt = [];
@@ -88,6 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Color code keyboard according to accuracy of user guesses
     function keyboardFeedback() 
     {
         // Add specific color class to each key if its digit was a part of a previous guess
@@ -118,5 +140,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Run on load
 
-    randomColor();
+    color = randomColor();
+    color_box.style.backgroundColor = '#' + color;
 });
