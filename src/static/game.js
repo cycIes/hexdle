@@ -10,16 +10,17 @@ document.addEventListener('DOMContentLoaded', () => {
     let limited_mode = false;
     const digits_count = 6;
 
-    const MAX_ATTEMPTS = 2;
+    const MAX_ATTEMPTS = 10;
 
     // Document nodes
     const color_box = document.querySelector('#color-box')
-    const check = document.querySelector('#check');
     const input = document.querySelector('#input');
+    const check = document.querySelector('#check');
     const keys = document.querySelectorAll('.key');
     const limited_mode_toggle = document.querySelector('#switchGuessMode');
     const extra = document.querySelector('#extra');
     const results = document.querySelector('#results');
+    const new_game = document.querySelector('#new-game');
 
     const previous_guesses = input.querySelector('#previous');
     const current_guess = input.querySelector('#current');
@@ -54,6 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
         results_header.textContent = '';
         results_body.replaceChildren();
 
+        current_guess.hidden = false;
+        check.hidden = false;
         keyboardReset();
     }
 
@@ -131,6 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         {
             won = true;
             end = true;
+
             win();
         }
         else if (limited_mode && count >= MAX_ATTEMPTS)
@@ -313,10 +317,13 @@ document.addEventListener('DOMContentLoaded', () => {
         checkGuess(digits);
         keyboardFeedback();
 
-        if (!end) 
+        const last_attempt = attempts[attempts.length - 1];
+        newInputs(last_attempt);
+
+        if (end) 
         {
-            const last_attempt = attempts[attempts.length - 1];
-            newInputs(last_attempt);
+            current_guess.hidden = true;
+            check.hidden = true;
         }
     });
 
@@ -340,7 +347,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Start a new game 
+    // Start a new game
+    new_game.addEventListener('click', () => {
+        reset();
+    });
+
+    // Start a new game from results page
     play_again.addEventListener('submit', (e) => {
         e.preventDefault();
         results_page.hide();

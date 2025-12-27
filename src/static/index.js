@@ -10,8 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const valid_special_keys = ['Backspace', 'Tab'];
     // Valid hexadecimal digits
     const valid_digit_keys = ['A', 'B', 'C', 'D', 'E', 'F', 'a', 'b', 'c', 'd', 'e', 'f', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
-    // The number of digits in a hexcode
-    const digits_count = 6;
 
     // Fetch user settings preferences
     let color_scheme;
@@ -21,16 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(data => {
         color_scheme = data.dark_mode ? color_scheme = 'dark' : color_scheme = 'light';
         limited_mode = data.limited_mode;
-    });
-
-    // Fetch max attempts and count data
-    let max_attempts;
-    let count;
-    fetch('/data')
-    .then(response => response.json())
-    .then(data => {
-        max_attempts = data.max_attempts;
-        count = data.count;
     });
 
     // Focus the next element
@@ -159,18 +147,9 @@ document.addEventListener('DOMContentLoaded', () => {
     limited_mode_toggle.addEventListener('click', () => {
         limited_mode = !limited_mode;
         saveSettings();
-        if (limited_mode)
-        {
-            if (count >= max_attempts)
-            {
-                // Go to lose route and allow redirecting
-                fetch('/lose')
-                .then(response => {
-                    if (response.redirected) {
-                        window.location = response.url;
-                    }
-                })
-            }
-        }
     });
+
+    // Initialize Bootstrap tooltips
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 });
