@@ -33,14 +33,16 @@
         <!-- Input fields -->
         <form id="input" action="/check" method="post" class="m-2">
             <!-- Previous attempts -->
-            {% for attempt in attempts %}
-                <div class="inputs m-0">
-                    <p class="inline fw-bolder align-middle mb-0" style="color: {{ attempt["color"] }}">#</p>
-                    {% for digit in attempt["attempt"] %}
-                        <input name="attempt" value={{ digit["value"] }} disabled class="{{ digit["correct"] }} align-middle fs-3">
-                    {% endfor %}
-                </div>
-            {% endfor %}
+            <div id="previous">
+                {% for attempt in attempts %}
+                    <div class="inputs m-0">
+                        <p class="inline fw-bolder align-middle mb-0" style="color: {{ attempt["color"] }}">#</p>
+                        {% for digit in attempt["attempt"] %}
+                            <input name="attempt" value={{ digit["value"] }} disabled class="{{ digit["correct"] }} align-middle fs-3">
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
             <!-- Input fields for user -->
             {% if not end %}
                 <div id="current" class="inputs m-0">
@@ -172,65 +174,26 @@
                 </div>
             </div>
         </div>
-        {% if victory %}
-            <!-- Victory -->
-            <div class="modal fade" id="victory" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="victory-label" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header justify-content-center">
-                            <h1 class="modal-title fs-5" id="victory-label">Congratulations!</h1>
-                        </div>
-                        <div class="modal-body">
-                            <p>You guessed the color <span id="color">{{ color }}</span> in {{ count }} guess{% if count > 1 %}es{% endif %}!</p>
-                            <p>Here's how you did:</p>
-                            {% for attempt in attempts %}
-                                <div>
-                                    {% for digit in attempt["attempt"] %}
-                                        <div class="inline-square {{ digit["correct"] }}"></div>
-                                    {% endfor%}
-                                </div>
-                            {% endfor %}
-                        </div>
-                        <div class="modal-footer justify-content-center">
-                            <form action="/new" method="get">
-                                <button type="submit" class="normal-btn">Play Again</button>
-                            </form>
-                        </div>
+        <!-- Results -->
+        <div class="modal fade" id="results" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="results-label" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header justify-content-center">
+                        <h1 class="modal-title fs-5" id="results-label"></h1>
+                    </div>
+                    <div class="modal-body"></div>
+                    <div class="modal-footer justify-content-center">
+                        <form action="/new" method="get">
+                            <button type="submit" class="normal-btn">Play Again</button>
+                        </form>
                     </div>
                 </div>
             </div>
-        {% endif %}
-        {% if end and not victory %}
-            <!-- Loss -->
-            <div class="modal fade" id="loss" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="loss-label" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header justify-content-center">
-                            <h1 class="modal-title fs-5" id="loss-label">Sorry, you're out of guesses</h1>
-                        </div>
-                        <div class="modal-body">
-                            <p>The color was <span id="color">{{ color }}</span>.</p>
-                        </div>
-                        <div class="modal-footer justify-content-center">
-                            <form action="/new" method="get">
-                                <button type="submit" class="normal-btn">Play Again</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
+        </div>
     </div>
 {% endblock %}
 
 {% block embedded %}
-    {#
-    <style>
-        #color {
-            color: {{ color }};
-        }
-    #}
-    </style>
     <script type="text/javascript">
         const keys = document.querySelectorAll('.key');
         // Get known classifications for the digits
@@ -243,17 +206,6 @@
                 key.classList.add(key_classes[key.id]);
             }
         });
-
-        {% if victory %}
-            // Show victory result modal
-            const victory_page = new bootstrap.Modal(document.getElementById('victory'), {});
-            victory_page.show();
-        {% endif %}
-        {% if end and not victory %}
-            // Show loss result modal
-            const losing_page = new bootstrap.Modal(document.getElementById('loss'), {});
-            losing_page.show();
-        {% endif %}
     </script>
     <script src="static/game.js"></script>
 {% endblock %}
